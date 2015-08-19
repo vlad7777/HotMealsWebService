@@ -1,12 +1,15 @@
 package Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
  * Created by vlad on 10.8.15.
  */
 
-public class Dish implements Comparable<Dish>{
+public class Dish implements Comparable<Dish> {
+
     private int id;
 
     private int category_id;
@@ -19,14 +22,18 @@ public class Dish implements Comparable<Dish>{
 
     private int price;
 
-    private Date date;
+    private String dateBegin;
 
-    public Dish(int id, String categoryName, String name, int price)
+    private String dateEnd;
+
+    public Dish(int id, String categoryName, String name, int price, String dateBegin, String dateEnd)
     {
         this.id = id;
         this.categoryName = categoryName;
         this.name = name;
         this.price = price;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
     }
 
     @Override
@@ -76,19 +83,31 @@ public class Dish implements Comparable<Dish>{
         this.price = price;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getCategoryName() {
         return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    @JsonIgnore
+    public String getDateBegin() {
+        return dateBegin;
+    }
+
+    @JsonIgnore
+    public void setDateBegin(String dateBegin) {
+        this.dateBegin = dateBegin;
+    }
+
+    @JsonIgnore
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    @JsonIgnore
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
     }
 }
