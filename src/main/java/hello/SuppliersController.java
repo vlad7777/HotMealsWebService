@@ -17,43 +17,45 @@ import Entities.Supplier;
 @RequestMapping("/hotmeals/suppliers")
 public class SuppliersController {
 
-    private static final String template = "Hello, %s!";
+    private List<Supplier> suppliers = null;
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Supplier> fetchSuppliers() {
-        List<Supplier> suppliers = new ArrayList<Supplier>();
-        suppliers.add(new Supplier(0, "Drug dealer"));
-        suppliers.add(new Supplier(1, "KFC"));
-        suppliers.add(new Supplier(2, "Macdonald's"));
-        suppliers.add(new Supplier(3, "Beltelecom"));
+        if (suppliers == null)
+            syncWithDatabase();
         return suppliers;
     }
 
     @RequestMapping(value = "/{supplierId}/dishes", method = RequestMethod.GET)
     public List<Dish> fetchDishes(@PathVariable String supplierId) {
-        List<Dish> dishes = new ArrayList<>();
-        dishes.add(new Dish(0, "Soup", "Troll's fat in vodka", 12000));
-        dishes.add(new Dish(1, "Soup", "Żurek", 20000));
-        dishes.add(new Dish(2, "Main Dish", "Chicken with fries", 25000));
-        dishes.add(new Dish(3, "Main Dish", "VGA cable", 14000));
-        dishes.add(new Dish(4, "Main Dish", "Burned curry wurst", 30000));
-        dishes.add(new Dish(5, "Dessert", "Dragon's eye", 2300000));
-        dishes.add(new Dish(6, "Dessert", "Salt", 10));
-        return dishes;
+        if (suppliers == null)
+            syncWithDatabase();
+        for (Supplier supplier : suppliers) {
+            if (supplier.getId() == Integer.parseInt(supplierId))
+                return supplier.getDishes();
+        }
+        return new ArrayList<Dish>();
     }
 
     @RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)
     public List<Dish> fetchDishes(@PathVariable String supplierId, @PathVariable String date) {
-        List<Dish> dishes = new ArrayList<>();
-        dishes.add(new Dish(7, "Atrocity", supplierId + " for " + date, 12000));
-        dishes.add(new Dish(0, "Soup", "Troll's fat in vodka", 12000));
-        dishes.add(new Dish(1, "Soup", "Żurek", 20000));
-        dishes.add(new Dish(2, "Main Dish", "Chicken with fries", 25000));
-        dishes.add(new Dish(3, "Main Dish", "VGA cable", 14000));
-        dishes.add(new Dish(4, "Main Dish", "Burned curry wurst", 30000));
-        dishes.add(new Dish(5, "Dessert", "Dragon's eye", 2300000));
-        dishes.add(new Dish(6, "Dessert", "Salt", 10));
-        return dishes;
+        if (suppliers == null)
+            syncWithDatabase();
+        for (Supplier supplier : suppliers) {
+            if (supplier.getId() == Integer.parseInt(supplierId))
+                return supplier.selectDishes(date);
+        }
+        return new ArrayList<Dish>();
+    }
+
+    private void syncWithDatabase() {
+        suppliers = new ArrayList<Supplier>();
+        suppliers.add(new Supplier(0, "Bronte"));
+        suppliers.add(new Supplier(1, "KFC"));
+        suppliers.add(new Supplier(2, "doorknob"));
+        suppliers.add(new Supplier(3, "switch"));
+        suppliers.add(new Supplier(4, "delicious"));
+        suppliers.add(new Supplier(5, "Gourmet"));
     }
 }
