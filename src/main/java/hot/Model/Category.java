@@ -1,15 +1,31 @@
 package hot.Model;
 
-/**
- * Created by vlad on 10.8.15.
- */
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Category {
 
-    private int id;
-
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
     private int supplier_id;
-
     private String name;
+
+    protected Category() {}
+
+    public Category( int supplier_id, String name) {
+        this.supplier_id = supplier_id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Category[id=%d, supplier_id=%d, name='%s']",
+                             id, supplier_id, name);
+    }
 
     public String getName() {
         return name;
@@ -27,7 +43,7 @@ public class Category {
         this.supplier_id = supplier_id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
