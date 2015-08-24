@@ -1,4 +1,4 @@
-package Model;
+package hot.Model;
 
 /**
  * Created by vlad on 10.8.15.

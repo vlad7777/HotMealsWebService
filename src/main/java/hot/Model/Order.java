@@ -1,4 +1,4 @@
-package Model;
+package hot.Model;
 
 import java.util.ArrayList;
 import java.util.List;
