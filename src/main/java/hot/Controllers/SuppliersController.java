@@ -1,4 +1,4 @@
-package hello;
+package hot.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Entities.Dish;
-import Entities.Supplier;
+import hot.Model.Dish;
+import hot.Model.Supplier;
 
 @RestController
 @RequestMapping("/hotmeals/suppliers")
