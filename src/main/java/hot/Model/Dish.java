@@ -2,21 +2,30 @@ package hot.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
 import java.util.Date;
 
 /**
  * Created by vlad on 10.8.15.
  */
 
+@Entity
 public class Dish implements Comparable<Dish> {
 
-    private int id;
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
 
-    private int category_id;
+    private long category_id;
 
     private String categoryName;
 
-    private int supplier_id;
+    private long supplier_id;
 
     private String name;
 
@@ -25,10 +34,11 @@ public class Dish implements Comparable<Dish> {
     private String dateBegin;
 
     private String dateEnd;
+    
+    protected Dish() {/* for JPA only */}
 
-    public Dish(int id, String categoryName, String name, int price, String dateBegin, String dateEnd)
+    public Dish(String categoryName, String name, int price, String dateBegin, String dateEnd)
     {
-        this.id = id;
         this.categoryName = categoryName;
         this.name = name;
         this.price = price;
@@ -43,7 +53,7 @@ public class Dish implements Comparable<Dish> {
         return c1 == 0 ? this.name.compareTo(dish.getName()) : c1;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -51,7 +61,7 @@ public class Dish implements Comparable<Dish> {
         this.id = id;
     }
 
-    public int getCategory_id() {
+    public long getCategory_id() {
         return category_id;
     }
 
@@ -59,7 +69,7 @@ public class Dish implements Comparable<Dish> {
         this.category_id = category_id;
     }
 
-    public int getSupplier_id() {
+    public long getSupplier_id() {
         return supplier_id;
     }
 

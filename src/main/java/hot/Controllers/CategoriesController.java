@@ -21,10 +21,7 @@ public class CategoriesController {
 	private CategoriesRepository cr;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	List<Category> fetchCat(@RequestParam("supplier_id") int supplier_id, @RequestParam("name") String name) {
-
-		Category c = new Category(supplier_id, name);
-		cr.save(c);
+	List<Category> fetchCat() {
 		return cr.findAll();
 	}
 

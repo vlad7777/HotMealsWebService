@@ -1,5 +1,10 @@
 package hot.Model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,9 +17,12 @@ import java.util.List;
 
 import ch.qos.logback.core.pattern.color.YellowCompositeConverter;
 
+@Entity
 public class Supplier{
 
-    private int id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
 
     private String name;
 
@@ -24,31 +32,40 @@ public class Supplier{
 
     private double lng;
 
+    @JsonIgnore
+    @Transient
     private List<String> dates;
 
+    @Transient
     private List<Dish> dishes;
+    
+    protected Supplier() {/* for JPA only */}
 
+    @JsonIgnore
+    @Transient
     public List<String> getDates() {
         return dates;
     }
 
+    @JsonIgnore
+    @Transient
     public void setDates(List<String> dates) {
         this.dates = dates;
     }
 
-    public Supplier(int id, String name)
+    public Supplier(String name)
     {
         this.name = name;
-        this.id = id;
+        //this.id = id;
         this.dates = new ArrayList<String>();
         dates.add(new Date().toString());
         dishes = null;
     }
 
-    public Supplier(int id, String name, String address, double lat, double lng)
+    public Supplier(String name, String address, double lat, double lng)
     {
         this.name = name;
-        this.id = id;
+        //this.id = id;
         this.address = address;
         this.lat = lat;
         this.lng = lng;
@@ -95,19 +112,19 @@ public class Supplier{
         String sYesterday = df.format(yesterday);
 
         dishes = new ArrayList<Dish>();
-        dishes.add(new Dish(0, "Soup", "Motherboard compound", 12000, sToday, sTomorrow));
-        dishes.add(new Dish(1, "Soup", "Black hole blackness", 14300, sToday, sTomorrow));
-        dishes.add(new Dish(2, "Soup", "Adam's Adam's apple", 23999, sToday, sToday));
-        dishes.add(new Dish(3, "Dessert", "Virgin's tears syrup", 230500, sYesterday, sYesterday));
-        dishes.add(new Dish(4, "Supplier ID", Integer.toString(id), 23000, sToday, sToday));
-        dishes.add(new Dish(5, "Main Dish", "chicken fillet seasoned with garlic", 40000, sToday, sTomorrow));
-        dishes.add(new Dish(6, "Main Dish", "french fries", 23000, sTomorrow, sTomorrow));
-        dishes.add(new Dish(7, "Main Dish", "not so french fries", 43000, sToday, sToday));
-        dishes.add(new Dish(8, "Dessert", "Sweet Cherry Pie", 34000, sTomorrow, sTomorrow));
-        dishes.add(new Dish(9, "Dessert", "Ice Cream Sandwitch", 23000, sToday, sToday));
-        dishes.add(new Dish(10, "Exclusive", "Yesterday Exclusive", 23000, sYesterday, sYesterday));
-        dishes.add(new Dish(11, "Exclusive", "Today Exclusive", 23000, sToday, sToday));
-        dishes.add(new Dish(12, "Exclusive", "Tomorrow Exclusive", 23000, sTomorrow, sTomorrow));
+        dishes.add(new Dish("Soup", "Motherboard compound", 12000, sToday, sTomorrow));
+        dishes.add(new Dish("Soup", "Black hole blackness", 14300, sToday, sTomorrow));
+        dishes.add(new Dish("Soup", "Adam's Adam's apple", 23999, sToday, sToday));
+        dishes.add(new Dish("Dessert", "Virgin's tears syrup", 230500, sYesterday, sYesterday));
+        dishes.add(new Dish("Supplier ID", Long.toString(id), 23000, sToday, sToday));
+        dishes.add(new Dish("Main Dish", "chicken fillet seasoned with garlic", 40000, sToday, sTomorrow));
+        dishes.add(new Dish("Main Dish", "french fries", 23000, sTomorrow, sTomorrow));
+        dishes.add(new Dish("Main Dish", "not so french fries", 43000, sToday, sToday));
+        dishes.add(new Dish("Dessert", "Sweet Cherry Pie", 34000, sTomorrow, sTomorrow));
+        dishes.add(new Dish("Dessert", "Ice Cream Sandwitch", 23000, sToday, sToday));
+        dishes.add(new Dish("Exclusive", "Yesterday Exclusive", 23000, sYesterday, sYesterday));
+        dishes.add(new Dish("Exclusive", "Today Exclusive", 23000, sToday, sToday));
+        dishes.add(new Dish("Exclusive", "Tomorrow Exclusive", 23000, sTomorrow, sTomorrow));
 
     }
 
@@ -117,7 +134,7 @@ public class Supplier{
         this.id = id;
     }
 
-    public int getId(){
+    public long getId(){
         return this.id;
     }
 
@@ -154,12 +171,11 @@ public class Supplier{
         this.name = name;
     }
 
-    @JsonIgnore
+   
     public List<Dish> getDishes() {
         return dishes;
     }
 
-    @JsonIgnore
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
     }

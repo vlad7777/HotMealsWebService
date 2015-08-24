@@ -14,7 +14,7 @@ public class Category {
     private int supplier_id;
     private String name;
 
-    protected Category() {}
+    protected Category() {/* for JPA only */}
 
     public Category( int supplier_id, String name) {
         this.supplier_id = supplier_id;

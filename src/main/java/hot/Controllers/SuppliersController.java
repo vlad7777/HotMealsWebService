@@ -4,58 +4,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import hot.Model.Dish;
 import hot.Model.Supplier;
+import hot.Model.SuppliersRepository;
 
 @RestController
 @RequestMapping("/hotmeals/suppliers")
 public class SuppliersController {
 
-    private List<Supplier> suppliers = null;
-    private final AtomicLong counter = new AtomicLong();
+    //private List<Supplier> suppliers = null;
+    //private final AtomicLong counter = new AtomicLong();
+	
+	@Autowired
+	private SuppliersRepository sr;
+	
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Supplier> fetchSuppliers() {
-        if (suppliers == null)
-            syncWithDatabase();
-        return suppliers;
+    List<Supplier> fetchSuppliers() {
+        return sr.findAll();
     }
-
+    
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody Supplier addSup(@RequestBody Supplier s) {
+    	return sr.save(s);
+    }
+/*
     @RequestMapping(value = "/{supplierId}/dishes", method = RequestMethod.GET)
-    public List<Dish> fetchDishes(@PathVariable String supplierId) {
-        if (suppliers == null)
-            syncWithDatabase();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getId() == Integer.parseInt(supplierId))
+    public List<Dish> fetchDishes(@PathVariable Long supplierId) {
+    	Supplier supplier = sr.findOne(supplierId);
+        if (supplier != null) {
                 return supplier.getDishes();
         }
         return new ArrayList<Dish>();
     }
 
     @RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)
-    public List<Dish> fetchDishes(@PathVariable String supplierId, @PathVariable String date) {
-        if (suppliers == null)
-            syncWithDatabase();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getId() == Integer.parseInt(supplierId))
+    public List<Dish> fetchDishes(@PathVariable Long supplierId, @PathVariable String date) {
+    	Supplier supplier = sr.findOne(supplierId);
+        if (supplier != null) {
                 return supplier.selectDishes(date);
         }
         return new ArrayList<Dish>();
     }
-
+*/
     private void syncWithDatabase() {
-        suppliers = new ArrayList<Supplier>();
-        suppliers.add(new Supplier(0, "Bronte"));
-        suppliers.add(new Supplier(1, "KFC"));
-        suppliers.add(new Supplier(2, "doorknob"));
-        suppliers.add(new Supplier(3, "switch"));
-        suppliers.add(new Supplier(4, "delicious"));
-        suppliers.add(new Supplier(5, "Gourmet"));
+        /*
+        suppliers.add(new Supplier("Bronte"));
+        suppliers.add(new Supplier("KFC"));
+        suppliers.add(new Supplier("doorknob"));
+        suppliers.add(new Supplier("switch"));
+        suppliers.add(new Supplier("delicious"));
+        suppliers.add(new Supplier("Gourmet"));
+         */
     }
 }
