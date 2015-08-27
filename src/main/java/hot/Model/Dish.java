@@ -21,11 +21,11 @@ public class Dish implements Comparable<Dish> {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
-    private long category_id;
+    private long categoryId;
 
     private String categoryName;
 
-    private long supplier_id;
+    private long supplierId;
 
     private String name;
 
@@ -45,6 +45,16 @@ public class Dish implements Comparable<Dish> {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
+    
+    public Dish(long supplierId, long categoryId , String name, int price)
+    {
+    	this.supplierId = supplierId;
+        this.categoryId = categoryId;
+        this.name = name;
+        this.price = price;
+        this.dateBegin = null;
+        this.dateEnd = null;
+    }
 
     @Override
     public int compareTo(Dish dish)
@@ -61,20 +71,20 @@ public class Dish implements Comparable<Dish> {
         this.id = id;
     }
 
-    public long getCategory_id() {
-        return category_id;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public long getSupplier_id() {
-        return supplier_id;
+    public long getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier_id(int supplier_id) {
-        this.supplier_id = supplier_id;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getName() {

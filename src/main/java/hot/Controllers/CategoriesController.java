@@ -27,7 +27,9 @@ public class CategoriesController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody Category addCat(@RequestBody Category c) {
-		
-		return cr.save(c);
+		if(cr.exists(c.getSupplierId()) && c.getName().equals("Soup"))
+			return cr.save(new Category(10, "mama"));
+		else
+			return cr.save(c);
 	}
 }

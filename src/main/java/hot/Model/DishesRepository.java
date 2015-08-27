@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DishesRepository extends CrudRepository<Dish, Long> {
 	List<Dish> findAll();
+	List<Dish> findBySupplierId(long supplierId);
 }

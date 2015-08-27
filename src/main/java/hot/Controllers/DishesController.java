@@ -31,9 +31,9 @@ public class DishesController {
     public List<Dish> fetchDishes(@PathVariable Long supplierId) {
     	Supplier supplier = sr.findOne(supplierId);
         if (supplier != null) {
-                return supplier.getDishes();
+                return dr.findBySupplierId(supplierId);
         }
-        return dr.findAll();
+        return null;
     }
 	
 	 @RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)

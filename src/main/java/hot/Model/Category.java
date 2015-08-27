@@ -11,20 +11,20 @@ public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    private int supplier_id;
+    private long supplierId;
     private String name;
 
     protected Category() {/* for JPA only */}
 
-    public Category( int supplier_id, String name) {
-        this.supplier_id = supplier_id;
+    public Category( long supplierId, String name) {
+        this.supplierId = supplierId;
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return String.format("Category[id=%d, supplier_id=%d, name='%s']",
-                             id, supplier_id, name);
+        return String.format("Category[id=%d, supplierId=%d, name='%s']",
+                             id, supplierId, name);
     }
 
     public String getName() {
@@ -35,19 +35,19 @@ public class Category {
         this.name = name;
     }
 
-    public int getSupplier_id() {
-        return supplier_id;
+    public long getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier_id(int supplier_id) {
-        this.supplier_id = supplier_id;
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
