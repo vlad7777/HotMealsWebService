@@ -111,22 +111,18 @@ public class Dish implements Comparable<Dish> {
         this.categoryName = categoryName;
     }
 
-    @JsonIgnore
     public String getDateBegin() {
         return dateBegin;
     }
 
-    @JsonIgnore
     public void setDateBegin(String dateBegin) {
         this.dateBegin = dateBegin;
     }
 
-    @JsonIgnore
     public String getDateEnd() {
         return dateEnd;
     }
 
-    @JsonIgnore
     public void setDateEnd(String dateEnd) {
         this.dateEnd = dateEnd;
     }
