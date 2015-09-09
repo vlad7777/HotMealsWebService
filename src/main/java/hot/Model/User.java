@@ -1,21 +1,37 @@
 package hot.Model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Created by vlad on 10.8.15.
  */
+@Entity
 public class User {
-    private int user_id;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private long userId;
 
     private String login;
 
     private String password;
-
-    public int getUser_id() {
-        return user_id;
+    
+    protected User() { /* For JPA only */}
+    
+    public User(String login, String password) {
+    	this.login = login;
+    	this.password = password;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getLogin() {

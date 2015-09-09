@@ -20,6 +20,12 @@ public class Category {
         this.supplierId = supplierId;
         this.name = name;
     }
+    
+    public Category( long supplierId, long id, String name) {
+    	this.supplierId = supplierId;
+    	this.id = id;
+    	this.name = name;
+    }
 
     @Override
     public String toString() {

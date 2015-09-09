@@ -33,8 +33,19 @@ public class CategoriesController {
 
 	@RequestMapping(value = "/category", method = RequestMethod.POST)
 	@ResponseBody Category addCat(@RequestBody Category c) {
-		if(cr.exists(c.getSupplierId()) && c.getName().equals("Soup"))
-			return cr.save(new Category(10, "mama"));
+		long supId = c.getSupplierId();
+		String nameCat = c.getName();
+		List<Category> crList = cr.findBySupplierId(supId);
+		boolean isExist = false;
+		long catId = 0;
+		for(Category cc: crList){
+			if(cc.getName().equals(nameCat)) {
+					isExist = true;
+					catId = cc.getId();
+			}
+		}
+		if(cr.exists(supId) && isExist)
+			return cr.save(new Category(supId, catId, nameCat));
 		else
 			return cr.save(c);
 	}
