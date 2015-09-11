@@ -4,24 +4,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ReceiptLine {
 	
+	@JsonIgnore
+	@ManyToOne
+	private Receipt receipt;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private long receiptId;
+	//private long receiptId;
 	private long dishId;
 	
-	public ReceiptLine(long receiptId, long dishId) {
-		this.receiptId = receiptId;
+	protected ReceiptLine() { /* For JPA only */ }
+	
+	public ReceiptLine(long dishId) {
+		//this.receiptId = receiptId;
 		this.dishId = dishId;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("ReceiptLine[ id = %d, orderId = %d, dishId = %d]", id, receiptId, dishId);
+		return String.format("ReceiptLine[ receiptLineId = %d, dishId = %d]", id, dishId);
 	}
 	
 	public long getId() {
@@ -31,7 +40,7 @@ public class ReceiptLine {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+/*	
 	public long getReceiptId() {
 		return receiptId;
 	}
@@ -39,7 +48,7 @@ public class ReceiptLine {
 	public void setReceiptId(long orderId) {
 		this.receiptId = orderId;
 	}
-	
+	*/
 	public long getDishId() {
 		return dishId;
 	}

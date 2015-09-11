@@ -1,12 +1,15 @@
 package hot.Model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,11 +17,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Receipt{
 
+	@OneToMany(cascade = {CascadeType.ALL})
+	private Set<ReceiptLine> receiptLines = new HashSet<>();
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private long userId;
+    
+    private long supplierId;
 
     private String date;
 
@@ -28,15 +36,16 @@ public class Receipt{
 
     private int total;
 
-    @JsonIgnore
-    @Transient
-    private List<Dish> dishes;
+//    @JsonIgnore
+//    @Transient
+//    private List<Dish> dishes;
     
     protected Receipt() {/* for JPA only */}
     
-    public Receipt(long id, long userId, String date, String address, String comment, int total) {
+    public Receipt(long id, long userId, long supplierId, String date, String address, String comment, int total) {
     	this.id = id;
     	this.userId = userId;
+    	this.supplierId = supplierId;
     	this.date = date;
     	this.address = address;
     	this.comment = comment;
@@ -47,6 +56,10 @@ public class Receipt{
 	public String toString() {
 		return String.format("Receipt[ id = %d, userId = %d]", id, userId);
 	}
+    
+    public Set<ReceiptLine> getReceiptLine() {
+    	return receiptLines;
+    }
 
     public long getId() {
         return id;
