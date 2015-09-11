@@ -1,4 +1,4 @@
-package hot.Model;
+package com.ericpol.hotmeals.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package hot.Controllers;
+package com.ericpol.hotmeals.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import hot.Model.Dish;
-import hot.Model.Supplier;
-import hot.Model.SuppliersRepository;
+import com.ericpol.hotmeals.Model.Dish;
+import com.ericpol.hotmeals.Model.Supplier;
+import com.ericpol.hotmeals.Model.SuppliersRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/hotmeals/suppliers")

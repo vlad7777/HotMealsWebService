@@ -1,4 +1,4 @@
-package hot.Model;
+package com.ericpol.hotmeals.Model;
 
 import java.util.List;
 
