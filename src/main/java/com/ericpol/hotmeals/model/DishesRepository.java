@@ -1,4 +1,4 @@
-package com.ericpol.hotmeals.Model;
+package com.ericpol.hotmeals.model;
 
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;

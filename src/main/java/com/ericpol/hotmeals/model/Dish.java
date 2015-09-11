@@ -1,14 +1,9 @@
-package com.ericpol.hotmeals.Model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.ericpol.hotmeals.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-
-import java.util.Date;
 
 /**
  * Created by vlad on 10.8.15.

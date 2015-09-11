@@ -1,4 +1,4 @@
-package com.ericpol.hotmeals.Controllers;
+package com.ericpol.hotmeals.controllers;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ericpol.hotmeals.Model.Receipt;
-import com.ericpol.hotmeals.Model.ReceiptsRepository;
+import com.ericpol.hotmeals.model.Receipt;
+import com.ericpol.hotmeals.model.ReceiptsRepository;
 
 @RestController
 @RequestMapping("/hotmeals")

@@ -1,4 +1,4 @@
-package com.ericpol.hotmeals.Model;
+package com.ericpol.hotmeals.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import ch.qos.logback.core.pattern.color.YellowCompositeConverter;
 
 @Entity
 public class Supplier{

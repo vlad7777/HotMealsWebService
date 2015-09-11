@@ -7,7 +7,7 @@
 import httplib
 import json
 
-conn = httplib.HTTPConnection("localhost", 8080)
+conn = httplib.HTTPSConnection("localhost", 8080)
 headers = {"Content-type": "application/json"}
 
 data = [
@@ -93,6 +93,7 @@ for s in data:
     post_data = {"name":s["name"]}
     conn.request("POST", "/hotmeals/suppliers", json.dumps(post_data), headers)
     response = conn.getresponse()
+    print response
     resp_data = json.loads(response.read())
     #print resp_data
     supp_id = resp_data["id"]

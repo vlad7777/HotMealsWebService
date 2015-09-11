@@ -1,20 +1,18 @@
-package com.ericpol.hotmeals.Controllers;
+package com.ericpol.hotmeals.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ericpol.hotmeals.Model.Dish;
-import com.ericpol.hotmeals.Model.DishesRepository;
-import com.ericpol.hotmeals.Model.Supplier;
-import com.ericpol.hotmeals.Model.SuppliersRepository;
+import com.ericpol.hotmeals.model.Dish;
+import com.ericpol.hotmeals.model.DishesRepository;
+import com.ericpol.hotmeals.model.Supplier;
+import com.ericpol.hotmeals.model.SuppliersRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

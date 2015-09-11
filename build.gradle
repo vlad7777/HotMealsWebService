@@ -1,11 +1,15 @@
 buildscript {
+
+	ext {
+		springBootVersion = '1.0.2.RELEASE'
+	}
 	repositories {
 		maven { url "http://repo.spring.io/libs-release" }
 		mavenLocal()
 		mavenCentral()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
 	}
 }
 
@@ -27,6 +31,24 @@ repositories {
 }
 
 dependencies {
+
+	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-aop:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+    compile("org.springframework.data:spring-data-rest-webmvc")
+    compile("org.springframework.security.oauth:spring-security-oauth2:2.0.0.RC2")
+    compile("org.springframework.security.oauth:spring-security-oauth2-javaconfig:1.0.0.M1")
+
+    compile("org.hsqldb:hsqldb")
+
+    compile("com.google.guava:guava:17.0")
+    compile("org.apache.httpcomponents:httpclient:4.3.4")
+    compile("com.squareup.retrofit:retrofit:1.6.0")
+    compile("commons-io:commons-io:2.4")
+
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile("org.springframework.boot:spring-boot-starter-data-rest")
 	compile("com.h2database:h2")
