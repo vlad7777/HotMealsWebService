@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.UUID;
 
+import com.ericpol.hotmeals.model.Category;
 import com.ericpol.hotmeals.model.Supplier;
 import com.ericpol.hotmeals.client.HotmealsApi;
 import com.ericpol.hotmeals.client.SecuredRestBuilder;
@@ -16,28 +17,6 @@ import retrofit.client.ApacheClient;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/**
- * 
- * This integration test sends a POST request to the VideoServlet to add a new
- * video and then sends a second GET request to check that the video showed up
- * in the list of videos. Actual network communication using HTTP is performed
- * with this test.
- * 
- * The test requires that the VideoSvc be running first (see the directions in
- * the README.md file for how to launch the Application).
- * 
- * To run this test, right-click on it in Eclipse and select
- * "Run As"->"JUnit Test"
- * 
- * Pay attention to how this test that actually uses HTTP and the test that just
- * directly makes method calls on a VideoSvc object are essentially identical.
- * All that changes is the setup of the hotmealsService variable. Yes, this could
- * be refactored to eliminate code duplication...but the goal was to show how
- * much Retrofit simplifies interaction with our service!
- * 
- * @author jules
- *
- */
 public class HotMealsClientApiTest {
 
 	private final String TOKEN_PATH = "/oauth/token";
@@ -49,7 +28,7 @@ public class HotMealsClientApiTest {
 
 	private final String TEST_URL = "https://localhost:8080";
 
-	private HotmealsApi hotmealsService = new SecuredRestBuilder()
+	private HotmealsApi hotmealsClient = new SecuredRestBuilder()
 			.setLoginEndpoint(TEST_URL + TOKEN_PATH)
 			.setUsername(USERNAME)
 			.setPassword(PASSWORD)
@@ -59,7 +38,7 @@ public class HotMealsClientApiTest {
 			.setEndpoint(TEST_URL).setLogLevel(LogLevel.FULL).build()
 			.create(HotmealsApi.class);
 
-	private HotmealsApi readOnlyHotmealsService = new SecuredRestBuilder()
+	private HotmealsApi readOnlyHotmealsClient = new SecuredRestBuilder()
 			.setLoginEndpoint(TEST_URL + TOKEN_PATH)
 			.setUsername(USERNAME)
 			.setPassword(PASSWORD)
@@ -69,7 +48,7 @@ public class HotMealsClientApiTest {
 			.setEndpoint(TEST_URL).setLogLevel(LogLevel.FULL).build()
 			.create(HotmealsApi.class);
 
-	private HotmealsApi invalidClientHotmealsService = new SecuredRestBuilder()
+	private HotmealsApi invalidHotmealsClient = new SecuredRestBuilder()
 			.setLoginEndpoint(TEST_URL + TOKEN_PATH)
 			.setUsername(UUID.randomUUID().toString())
 			.setPassword(UUID.randomUUID().toString())
@@ -80,37 +59,69 @@ public class HotMealsClientApiTest {
 			.create(HotmealsApi.class);
 
 	/**
-	 * This test creates a Video, adds the Video to the VideoSvc, and then
-	 * checks that the Video is included in the list when getVideoList() is
-	 * called.
+	 * This test ...
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testSuppliersList() throws Exception {
+	public void testAddSupplier() throws Exception {
 
-		// We should get back the video that we added above
-		Collection<Supplier> suppliers = hotmealsService.fetchSuppliers();
-		assertTrue(suppliers != null);
+		Supplier s = new Supplier("Test Supplier");
+		s = hotmealsClient.addSupplier(s);
+		
+		// We should get back the supplier that we added above
+		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
+		assertTrue(suppliers.contains(s));
 	}
 
+	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testFetchSuppliers() throws Exception {
+
+		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
+		assertTrue(suppliers != null);
+	}
+	
 	/**
 	 * This test ensures that clients with invalid credentials cannot get
 	 * access to videos.
 	 * 
 	 * @throws Exception
 	 */
-
 	@Test
 	public void testAccessDeniedWithIncorrectCredentials() throws Exception {
 
 		try {
-			Collection<Supplier> suppliers = invalidClientHotmealsService.fetchSuppliers();
-
+			Collection<Supplier> suppliers = invalidHotmealsClient.fetchSuppliers();
 			fail("Invalid user was granted permission to read data");
-		} catch (RetrofitError e) {
+		}
+		catch (RetrofitError e) {
 			assert (e.getCause() instanceof SecuredRestException);
 		}
+	}
+
+	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testInitialSetup() throws Exception {
+
+		Supplier s = hotmealsClient.addSupplier(new Supplier("Энергия"));
+
+		String [] cs = { "Первые блюда", "Вторые блюда", "Напитки" };
+		for (int i = 0; i < cs.length; i++) {
+			Category c = hotmealsClient.addCategory(new Category(s.getId(), cs[i]));
+		}
+		
+		// We should get back the supplier that we added above
+		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
+		assertTrue(suppliers.contains(s));
 	}
 
 }
