@@ -34,36 +34,23 @@ public class Supplier{
     @Transient
     private List<String> dates;
 
+    @JsonIgnore
     @Transient
     private List<Dish> dishes;
     
     protected Supplier() {/* for JPA only */}
 
-    @JsonIgnore
-    @Transient
-    public List<String> getDates() {
-        return dates;
-    }
-
-    @JsonIgnore
-    @Transient
-    public void setDates(List<String> dates) {
-        this.dates = dates;
-    }
-
-    public Supplier(String name)
-    {
+    public Supplier(String name) {
+    	super();
         this.name = name;
-        //this.id = id;
         this.dates = new ArrayList<String>();
         dates.add(new Date().toString());
         dishes = null;
     }
 
-    public Supplier(String name, String address, double lat, double lng)
-    {
-        this.name = name;
-        //this.id = id;
+    public Supplier(String name, String address, double lat, double lng) {
+    	super();
+    	this.name = name;
         this.address = address;
         this.lat = lat;
         this.lng = lng;
@@ -176,5 +163,13 @@ public class Supplier{
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public List<String> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<String> dates) {
+        this.dates = dates;
     }
 }

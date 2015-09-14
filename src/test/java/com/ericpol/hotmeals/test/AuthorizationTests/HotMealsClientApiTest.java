@@ -87,8 +87,23 @@ public class HotMealsClientApiTest {
 	}
 	
 	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testAddCategory() throws Exception {
+
+		Category c = hotmealsClient.addCategory(new Category(1, "Первые блюда"));
+		
+		// We should get back the category that we added above
+		Collection<Category> categories = hotmealsClient.fetchCategories();
+		assertTrue(categories.contains(c));
+	}
+
+	/**
 	 * This test ensures that clients with invalid credentials cannot get
-	 * access to videos.
+	 * access to the service.
 	 * 
 	 * @throws Exception
 	 */

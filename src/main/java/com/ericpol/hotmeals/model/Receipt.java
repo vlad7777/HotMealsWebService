@@ -11,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Receipt{
+public class Receipt {
 
+	/*
 	@OneToMany(cascade = {CascadeType.ALL})
 	private Set<ReceiptLine> receiptLines = new HashSet<>();
+	*/
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +32,7 @@ public class Receipt{
 
     private String comment;
 
-    private int total;
+    private double total;
 
 //    @JsonIgnore
 //    @Transient
@@ -38,8 +40,8 @@ public class Receipt{
     
     protected Receipt() {/* for JPA only */}
     
-    public Receipt(long id, long userId, long supplierId, String date, String address, String comment, int total) {
-    	this.id = id;
+    public Receipt(long userId, long supplierId, String date, String address, String comment, double total) {
+    	super();
     	this.userId = userId;
     	this.supplierId = supplierId;
     	this.date = date;
@@ -53,9 +55,11 @@ public class Receipt{
 		return String.format("Receipt[ id = %d, userId = %d]", id, userId);
 	}
     
+    /*
     public Set<ReceiptLine> getReceiptLine() {
     	return receiptLines;
     }
+    */
 
     public long getId() {
         return id;
@@ -65,6 +69,22 @@ public class Receipt{
         this.id = id;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+    
+    public long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
+    }
+    
     public String getDate() {
         return date;
     }
@@ -72,13 +92,13 @@ public class Receipt{
     public void setDate(String date) {
         this.date = date;
     }
-
-    public long getUserId() {
-        return userId;
+    
+    public double getTotal() {
+    	return total;
     }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
+    
+    public void setTotal(double total) {
+    	this.total = total;
     }
     
     public String getAddress() {
@@ -95,13 +115,5 @@ public class Receipt{
     
     public void setComment(String comment) {
     	this.comment = comment;
-    }
-    
-    public int getTotal() {
-    	return total;
-    }
-    
-    public void setTotal(int total) {
-    	this.total = total;
     }
 }

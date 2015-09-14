@@ -31,7 +31,8 @@ public class SuppliersController {
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody Supplier addSup(@RequestBody Supplier s) {
-    	return sr.save(s);
+    	Supplier saved = sr.save(s);
+    	return saved;
     }
 /*
     @RequestMapping(value = "/{supplierId}/dishes", method = RequestMethod.GET)

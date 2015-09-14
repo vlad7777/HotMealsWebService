@@ -21,11 +21,11 @@ public class ReceiptsController {
 	private ReceiptsRepository or;
 	
 	@RequestMapping(value = "/users/{userId}/orders", method = RequestMethod.GET)
-	List<Receipt> fetchOrders(@PathVariable Long userId) {
+	List<Receipt> fetchUserReceipts(@PathVariable Long userId) {
 		return or.findByUserId(userId);
 	}
 	
-	@RequestMapping(value = "/order", method = RequestMethod.POST)
+	@RequestMapping(value = "/orders", method = RequestMethod.POST)
 	@ResponseBody Receipt addReceipt(@RequestBody Receipt r) {
 		return or.save(r);
 	}
