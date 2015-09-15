@@ -1,7 +1,11 @@
 package com.ericpol.hotmeals.auth;
 
+import com.ericpol.hotmeals.model.UsersRepository;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
@@ -23,6 +27,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -132,6 +137,9 @@ public class OAuth2SecurityConfiguration {
 		@Autowired
 		AuthenticationManagerBuilder auth;
 
+		@Autowired
+		UsersRepository usersRepository;
+
 		// Delegate the processing of Authentication requests to the framework
 		private AuthenticationManager authenticationManager = new AuthenticationManager() {
 			@Override
@@ -178,21 +186,16 @@ public class OAuth2SecurityConfiguration {
 					.accessTokenValiditySeconds(3600).and().build();
 
 			// Create a series of hard-coded users.
-			UserDetailsService svc = new InMemoryUserDetailsManager(
-					Arrays.asList(
-							User.create("admin", "pass", "ADMIN", "USER"),
-							User.create("user0", "pass", "USER"),
-							User.create("user1", "pass", "USER"),
-							User.create("user2", "pass", "USER"),
-							User.create("user3", "pass", "USER"),
-							User.create("user4", "pass", "USER"),
-							User.create("user5", "pass", "USER")));
+            List<com.ericpol.hotmeals.model.User> users = new ArrayList<>();
+			users.add(new com.ericpol.hotmeals.model.User("user0", "pass"));
+			List<UserDetails> oauthUsers = new ArrayList<UserDetails>();
 
+			for (com.ericpol.hotmeals.model.User user : users) {
+				oauthUsers.add(User.create(user.getLogin(), user.getPassword(), "USER"));
+			}
 
-			// when sending a request for a password grant, we make each client a user
-			// as well. When the BASIC authentication information is pulled from the
-			// request, this combined UserDetailsService will authenticate that the
-			// client is a valid "user".
+			UserDetailsService svc = new InMemoryUserDetailsManager(oauthUsers);
+
 			combinedService_ = new ClientAndUserDetailsService(csvc, svc);
 		}
 
@@ -256,6 +259,7 @@ public class OAuth2SecurityConfiguration {
 	//
 	//       http://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html
 	//
+
     @Bean
     EmbeddedServletContainerCustomizer containerCustomizer(
             @Value("${keystore.file:src/main/resources/private/keystore}") String keystoreFile,
@@ -288,9 +292,7 @@ public class OAuth2SecurityConfiguration {
 			                        proto.setKeyAlias("tomcat");
 								}
 		                    });
-
 			}
         };
     }
-
 }
