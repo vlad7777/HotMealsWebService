@@ -1,9 +1,16 @@
 package com.ericpol.hotmeals.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by vlad on 10.8.15.
@@ -18,6 +25,8 @@ public class Dish implements Comparable<Dish> {
 
     private long categoryId;
 
+    @JsonIgnore
+    @Transient
     private String categoryName;
 
     private long supplierId;
@@ -47,8 +56,16 @@ public class Dish implements Comparable<Dish> {
         this.categoryId = categoryId;
         this.name = name;
         this.price = price;
-        this.dateBegin = null;
-        this.dateEnd = null;
+        
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+
+        // Today
+        Date dt = new Date();
+        this.dateBegin = df.format(dt);
+
+        // After tomorrow
+        dt = new Date(dt.getTime() + (1000 * 60 * 60 * 24 * 2));
+        this.dateEnd = df.format(dt);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class HotMealsClientApiTest {
 	@Test
 	public void testAddSupplier() throws Exception {
 
-		Supplier s = hotmealsClient.addSupplier(new Supplier("Test Supplier"));
+		Supplier s = hotmealsClient.addSupplier(new Supplier("\"Смач\" - домашние обеды"));
 		assertTrue(s.getId() > 0);
 	}
 
@@ -150,7 +150,6 @@ public class HotMealsClientApiTest {
 		
 		Supplier s = hotmealsClient.addSupplier(new Supplier("Кафе \"Умида\""));
 
-		String [] cs = { "Напитки" };
 		Category c = hotmealsClient.addCategory(new Category(s.getId(), "Первые блюда"));
 		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Рассольник ленинградский с курицей", 9700.0));
 		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Суп из овощей с курицей", 8500.0));
@@ -164,10 +163,65 @@ public class HotMealsClientApiTest {
 		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Тефтели(свекла, морковь, лук зелёный, огурцы св., вода, сахар)", 10600.0));
 		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Филе скумбрии со шпинатом и помидорами(скумбрия с/м, помидоры св., майонез, сыр, шпинат)", 10600.0));
 
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Гарниры и добавки"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Горчица", 3100.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Каша гречневая с помидорами", 6400.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Кетчуп", 1300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Майонез", 2000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Пюре картофельное с помидорами", 8400.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Сметана", 2900.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Соус розовый", 1900.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Хрен", 3100.0));
 		
-		// We should get back the supplier that we added above
-		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
-		assertTrue(suppliers.contains(s));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Салаты"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Блинчики с семгой сл.солёной", 17200.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Буженина с помидорами", 12200.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Салат 'Нежность'(помидоры св., огурцы св., кукуруза, кр.мясо, перец сл.)", 9000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Салат из свежих помидоров с огурцами с заправкой(помидоры св., огурцы св., лук репч., масло оливк., уксус)", 8500.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Салат овощной с колбасой(картофель, морковь, лук, колбаса, яйцо, огурцы св., горошек)", 8800.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Яйца под майонезом(яйцо, майонез, помидоры, зелёный горошек, зелень)", 8900.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Яйца фаршированные грибами(яйца, шампиньоны, лук репч., майонез, зелень)", 6600.0));
+
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Напитки"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Напиток апельсиновый", 2800.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Сок \"Настоящий\"", 4600.0));
+
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Десерты"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Вафельные трубочки \"Вивайли\"", 3100.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Десерт \"Умида\"(клюква, сливки, зефир, грецкий орех, желатин, сахар)", 19300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Зефир бело-розовый(пачка)", 11100.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Зефирка бело-розовая", 3700.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Карамель на палочке \"GoodФрукт\"", 5300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Конфета \"Баунти\"", 9300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Крем 'Снежок'", 11400.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Лепёшка", 2500.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Лимон с сахаром", 3100.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Мороженое", 9500.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Печенье песочное 'Твикс'", 9300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Хлеб чёрный", 400.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Чипсы 'Мегачипс'", 8000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Шок.батончик 'Сникерс'", 9300.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Шоколад 'Алёнка' молочный", 6700.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Шоколад 'Коммунарка'", 6000.0));
+
+		s = hotmealsClient.addSupplier(new Supplier("\"Смач\" - домашние обеды"));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Суп"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Суп с фрикадельками", 12000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Щи кислые с грибами(овощи, шамп., сметана)", 12000.0));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Второе"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Гречка отв.+ куриные кусочки в соусе", 30000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Картофельное пюре + Бифштекс Смак", 30000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Гречка с шампиньонами ВЕГЕТАРИАНСКОЕ", 30000.0));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Салат"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Огурцы 'Пятиминутка'", 15000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Салат 'Летний'", 15000.0));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Комплекс второе+салат"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Гречка отв. + куриные кусочки в соусе + Салат 'Летний'", 40000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Гречка с шампиньонами ВЕГЕТАРИАНСКОЕ + Огурцы 'Пятиминутка'(2)", 40000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Картофельное пюре + Бифштекс Смак(2) + Огурцы 'Пятиминутка'", 40000.0));
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Комплекс суп+второе+салат"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Суп с фрикадельками(2); Картофельное пюре + Бифштекс Смак(2) + Огурцы 'Пятиминутка'(2)", 45000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Щи кислые с грибами(1); Гречка отв. + куриные кусочки в соусе(1) + Салат 'Летний'(1)", 45000.0));
 	}
 
 }

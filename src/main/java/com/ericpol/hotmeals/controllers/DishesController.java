@@ -17,7 +17,6 @@ import com.ericpol.hotmeals.model.SuppliersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@RequestMapping("/hotmeals/suppliers/{supplierId}/dishes")
 public class DishesController {
 
 	@Autowired
@@ -26,7 +25,13 @@ public class DishesController {
 	@Autowired
 	private SuppliersRepository sr;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/hotmeals/dishes", method = RequestMethod.POST)
+	@ResponseBody Dish addDish(@RequestBody Dish d) {
+
+		return dr.save(d);
+	}
+
+	@RequestMapping(value = "/hotmeals/suppliers/{supplierId}/dishes", method = RequestMethod.GET)
 	public List<Dish> fetchDishes(@PathVariable Long supplierId) {
 		Supplier supplier = sr.findOne(supplierId);
 		if (supplier != null) {
@@ -35,18 +40,12 @@ public class DishesController {
 		return null;
 	}
 
-	@RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)
+	@RequestMapping(value = "/hotmeals/suppliers/{supplierId}/dishes/{date}", method = RequestMethod.GET)
 	public List<Dish> fetchDishes(@PathVariable Long supplierId, @PathVariable String date) {
 		Supplier supplier = sr.findOne(supplierId);
 		if (supplier != null) {
 			return supplier.selectDishes(date);
 		}
 		return dr.findAll();
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseBody Dish addDish(@RequestBody Dish d) {
-
-		return dr.save(d);
 	}
 }
