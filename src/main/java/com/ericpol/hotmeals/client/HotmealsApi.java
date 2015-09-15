@@ -5,6 +5,7 @@ import java.util.List;
 import com.ericpol.hotmeals.model.Category;
 import com.ericpol.hotmeals.model.Dish;
 import com.ericpol.hotmeals.model.Supplier;
+import com.ericpol.hotmeals.model.User;
 
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -31,6 +32,9 @@ public interface HotmealsApi {
     @GET("/hotmeals/dishes")
     public List<Dish> fetchDishes();
 
+    @POST("/hotmeals/dishes")
+    public Dish addDish(@Body Dish d);
+
     @GET("/hotmeals/category")
     public List<Category> fetchCategories();
 
@@ -39,5 +43,8 @@ public interface HotmealsApi {
 
     @GET("/hotmeals/suppliers/{supplierId}/categories")
     public List<Category> fetchCategories(@Path("supplierId") String supplierId);
+
+    @POST("/hotmeals/users")
+    public User addUser(@Body User u);
 
 }

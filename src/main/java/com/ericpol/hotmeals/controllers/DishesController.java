@@ -27,26 +27,26 @@ public class DishesController {
 	private SuppliersRepository sr;
 	
 	@RequestMapping(method = RequestMethod.GET)
-    public List<Dish> fetchDishes(@PathVariable Long supplierId) {
-    	Supplier supplier = sr.findOne(supplierId);
-        if (supplier != null) {
-                return dr.findBySupplierId(supplierId);
-        }
-        return null;
-    }
-	
-	 @RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)
-	    public List<Dish> fetchDishes(@PathVariable Long supplierId, @PathVariable String date) {
-	    	Supplier supplier = sr.findOne(supplierId);
-	        if (supplier != null) {
-	                return supplier.selectDishes(date);
-	        }
-	        return dr.findAll();
-	    }
-	 
-	 @RequestMapping(method = RequestMethod.POST)
-		@ResponseBody Dish addDish(@RequestBody Dish d) {
-			
-			return dr.save(d);
+	public List<Dish> fetchDishes(@PathVariable Long supplierId) {
+		Supplier supplier = sr.findOne(supplierId);
+		if (supplier != null) {
+			return dr.findBySupplierId(supplierId);
 		}
+		return null;
+	}
+
+	@RequestMapping(value = "/{supplierId}/dishes/{date}", method = RequestMethod.GET)
+	public List<Dish> fetchDishes(@PathVariable Long supplierId, @PathVariable String date) {
+		Supplier supplier = sr.findOne(supplierId);
+		if (supplier != null) {
+			return supplier.selectDishes(date);
+		}
+		return dr.findAll();
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody Dish addDish(@RequestBody Dish d) {
+
+		return dr.save(d);
+	}
 }

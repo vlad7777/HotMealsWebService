@@ -6,6 +6,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 
 import com.ericpol.hotmeals.model.Category;
 import com.ericpol.hotmeals.model.Supplier;
+import com.ericpol.hotmeals.model.User;
 
 @Configuration
 public class RepositoryConfig extends RepositoryRestMvcConfiguration {
@@ -13,5 +14,6 @@ public class RepositoryConfig extends RepositoryRestMvcConfiguration {
     protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         config.exposeIdsFor(Category.class);
         config.exposeIdsFor(Supplier.class);
+        config.exposeIdsFor(User.class);
     }
 }

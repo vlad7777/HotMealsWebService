@@ -13,6 +13,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private long supplierId;
     private String name;
 

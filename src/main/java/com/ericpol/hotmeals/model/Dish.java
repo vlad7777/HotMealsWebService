@@ -24,7 +24,7 @@ public class Dish implements Comparable<Dish> {
 
     private String name;
 
-    private int price;
+    private double price;
 
     private String dateBegin;
 
@@ -41,7 +41,7 @@ public class Dish implements Comparable<Dish> {
         this.dateEnd = dateEnd;
     }
     
-    public Dish(long supplierId, long categoryId , String name, int price)
+    public Dish(long supplierId, long categoryId , String name, double price)
     {
     	this.supplierId = supplierId;
         this.categoryId = categoryId;
@@ -90,11 +90,11 @@ public class Dish implements Comparable<Dish> {
         this.name = name;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

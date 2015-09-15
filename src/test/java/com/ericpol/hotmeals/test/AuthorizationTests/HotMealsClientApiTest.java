@@ -6,14 +6,16 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.ericpol.hotmeals.model.Category;
+import com.ericpol.hotmeals.model.Dish;
 import com.ericpol.hotmeals.model.Supplier;
+import com.ericpol.hotmeals.model.User;
 import com.ericpol.hotmeals.client.HotmealsApi;
 import com.ericpol.hotmeals.client.SecuredRestBuilder;
 import com.ericpol.hotmeals.client.SecuredRestException;
+
 import retrofit.RestAdapter.LogLevel;
 import retrofit.RetrofitError;
 import retrofit.client.ApacheClient;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -66,12 +68,8 @@ public class HotMealsClientApiTest {
 	@Test
 	public void testAddSupplier() throws Exception {
 
-		Supplier s = new Supplier("Test Supplier");
-		s = hotmealsClient.addSupplier(s);
-		
-		// We should get back the supplier that we added above
-		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
-		assertTrue(suppliers.contains(s));
+		Supplier s = hotmealsClient.addSupplier(new Supplier("Test Supplier"));
+		assertTrue(s.getId() > 0);
 	}
 
 	/**
@@ -95,10 +93,31 @@ public class HotMealsClientApiTest {
 	public void testAddCategory() throws Exception {
 
 		Category c = hotmealsClient.addCategory(new Category(1, "Первые блюда"));
-		
-		// We should get back the category that we added above
-		Collection<Category> categories = hotmealsClient.fetchCategories();
-		assertTrue(categories.contains(c));
+		assertTrue(c.getId() > 0);
+	}
+
+	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testAddDish() throws Exception {
+
+		Dish d = hotmealsClient.addDish(new Dish(1, 1, "Рассольник ленинградский с курицей", 9700.0));
+		assertTrue(d.getId() > 0);
+	}
+
+	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testAddUser() throws Exception {
+
+		User u = hotmealsClient.addUser(new User("user0", "pass", "Вася", "Пупкин", "vp@google.com", null));
+		assertTrue(u.getId() > 0);
 	}
 
 	/**
@@ -127,12 +146,24 @@ public class HotMealsClientApiTest {
 	@Test
 	public void testInitialSetup() throws Exception {
 
-		Supplier s = hotmealsClient.addSupplier(new Supplier("Энергия"));
+		hotmealsClient.addUser(new User("user0", "pass", "Вася", "Пупкин", "vp@google.com", null));
+		
+		Supplier s = hotmealsClient.addSupplier(new Supplier("Кафе \"Умида\""));
 
-		String [] cs = { "Первые блюда", "Вторые блюда", "Напитки" };
-		for (int i = 0; i < cs.length; i++) {
-			Category c = hotmealsClient.addCategory(new Category(s.getId(), cs[i]));
-		}
+		String [] cs = { "Напитки" };
+		Category c = hotmealsClient.addCategory(new Category(s.getId(), "Первые блюда"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Рассольник ленинградский с курицей", 9700.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Суп из овощей с курицей", 8500.0));
+
+		c = hotmealsClient.addCategory(new Category(s.getId(), "Вторые блюда"));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Блинчики с творожным фаршем", 14000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Манты на пару со сметаной", 18400.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Плов по-узбекски", 18500.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Самса с куриными крылышками", 14000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Самса(тесто слоёное, фарш из телятины)", 17000.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Тефтели(свекла, морковь, лук зелёный, огурцы св., вода, сахар)", 10600.0));
+		hotmealsClient.addDish(new Dish(s.getId(), c.getId(), "Филе скумбрии со шпинатом и помидорами(скумбрия с/м, помидоры св., майонез, сыр, шпинат)", 10600.0));
+
 		
 		// We should get back the supplier that we added above
 		Collection<Supplier> suppliers = hotmealsClient.fetchSuppliers();
