@@ -1,6 +1,0 @@
-spring.datasource.url=jdbc:h2:file:hotmeals;FILE_LOCK=FS;DB_CLOSE_DELAY=-1;MODE=Oracle;TRACE_LEVEL_SYSTEM_OUT=2
-spring.datasource.username=sa
-spring.datasource.password=sa
-spring.datasource.driverClassName=org.h2.Driver
-spring.jpa.hibernate.ddl-auto=validate
-
