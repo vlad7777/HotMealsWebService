@@ -2,6 +2,7 @@ package com.ericpol.hotmeals;
 
 import com.ericpol.hotmeals.auth.OAuth2SecurityConfiguration;
 import com.ericpol.hotmeals.json.ResourcesMapper;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -46,7 +47,7 @@ public class Application extends RepositoryRestMvcConfiguration {
     //
     // Tell Spring to launch our app!
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    	SpringApplication.run(Application.class, args);
     }
 
     // We are overriding the bean that RepositoryRestMvcConfiguration
@@ -60,4 +61,5 @@ public class Application extends RepositoryRestMvcConfiguration {
     public ObjectMapper halObjectMapper(){
         return new ResourcesMapper();
     }
+    
 }
