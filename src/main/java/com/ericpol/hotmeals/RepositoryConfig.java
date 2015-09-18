@@ -6,6 +6,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 
 import com.ericpol.hotmeals.model.Category;
 import com.ericpol.hotmeals.model.Dish;
+import com.ericpol.hotmeals.model.Receipt;
 import com.ericpol.hotmeals.model.Supplier;
 import com.ericpol.hotmeals.model.User;
 
@@ -17,5 +18,6 @@ public class RepositoryConfig extends RepositoryRestMvcConfiguration {
         config.exposeIdsFor(Supplier.class);
         config.exposeIdsFor(Dish.class);
         config.exposeIdsFor(User.class);
+        config.exposeIdsFor(Receipt.class);
     }
 }

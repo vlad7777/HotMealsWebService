@@ -1,6 +1,9 @@
 package com.ericpol.hotmeals.controllers;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +51,17 @@ public class DishesController {
 		}
 		return dr.findAll();
 	}
+	
+    @RequestMapping(value="/hotmeals/dishes/{supplierId}/{categoryId}/{name}", method = RequestMethod.GET)
+    @ResponseBody Dish getDish(@PathVariable Long supplierId, @PathVariable Long categoryId, @PathVariable String name, HttpServletResponse response) throws IOException {
+
+    	List<Dish> dishes = dr.findBySupplierIdAndCategoryIdAndName(supplierId, categoryId, name);
+    	if (dishes != null && !dishes.isEmpty())
+    		return dishes.get(0);
+    	else {
+    		response.sendError(404, "There's no supplier with given name.");
+    		return null;
+    	}
+    }
+	
 }

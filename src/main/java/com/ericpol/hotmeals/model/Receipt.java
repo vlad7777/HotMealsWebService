@@ -1,23 +1,21 @@
 package com.ericpol.hotmeals.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Receipt {
 
-	/*
-	@OneToMany(cascade = {CascadeType.ALL})
-	private Set<ReceiptLine> receiptLines = new HashSet<>();
-	*/
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -34,10 +32,9 @@ public class Receipt {
 
     private double total;
 
-//    @JsonIgnore
-//    @Transient
-//    private List<Dish> dishes;
-    
+	@Transient
+	Dish[] dishes;
+	
     protected Receipt() {/* for JPA only */}
     
     public Receipt(long userId, long supplierId, String date, String address, String comment, double total) {
@@ -55,12 +52,6 @@ public class Receipt {
 		return String.format("Receipt[ id = %d, userId = %d]", id, userId);
 	}
     
-    /*
-    public Set<ReceiptLine> getReceiptLine() {
-    	return receiptLines;
-    }
-    */
-
     public long getId() {
         return id;
     }
@@ -93,6 +84,14 @@ public class Receipt {
         this.date = date;
     }
     
+    public Dish[] getDishes() {
+    	return dishes;
+    }
+
+    public void setDishes(Dish[] dishes) {
+    	this.dishes = dishes;
+    }
+
     public double getTotal() {
     	return total;
     }

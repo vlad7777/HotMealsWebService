@@ -1,7 +1,12 @@
 package com.ericpol.hotmeals.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpResponse;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +19,6 @@ import com.ericpol.hotmeals.model.SuppliersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@RequestMapping("/hotmeals/suppliers")
 public class SuppliersController {
 
     //private List<Supplier> suppliers = null;
@@ -23,16 +27,27 @@ public class SuppliersController {
 	@Autowired
 	private SuppliersRepository sr;
 	
-
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="/hotmeals/suppliers", method = RequestMethod.GET)
     List<Supplier> fetchSuppliers() {
         return sr.findAll();
     }
     
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody Supplier addSup(@RequestBody Supplier s) {
+    @RequestMapping(value="/hotmeals/suppliers", method = RequestMethod.POST)
+    @ResponseBody Supplier addSupplier(@RequestBody Supplier s) {
     	Supplier saved = sr.save(s);
     	return saved;
+    }
+
+    @RequestMapping(value="/hotmeals/suppliers/{name}", method = RequestMethod.GET)
+    @ResponseBody Supplier getSupplier(@PathVariable String name, HttpServletResponse response) throws IOException {
+
+    	List<Supplier> suppliers = sr.findByName(name);
+    	if (suppliers != null && !suppliers.isEmpty())
+    		return suppliers.get(0);
+    	else {
+    		response.sendError(404, "There's no supplier with given name.");
+    		return null;
+    	}
     }
 /*
     @RequestMapping(value = "/{supplierId}/dishes", method = RequestMethod.GET)

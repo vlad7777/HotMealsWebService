@@ -1,13 +1,14 @@
 package com.ericpol.hotmeals.model;
 
 import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SuppliersRepository extends CrudRepository<Supplier, Long> {
+public interface ReceiptLinesRepository extends CrudRepository<ReceiptLine, Long>{
 
-	List<Supplier> findAll();
+	List<ReceiptLine> findByReceiptId(long receiptId);
 	
-	List<Supplier> findByName(String name);
+	List<ReceiptLine> findByDishId(long dishId);
 }

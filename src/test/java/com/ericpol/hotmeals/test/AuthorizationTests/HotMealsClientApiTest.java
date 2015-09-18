@@ -2,11 +2,17 @@ package com.ericpol.hotmeals.test.AuthorizationTests;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.ericpol.hotmeals.model.Category;
 import com.ericpol.hotmeals.model.Dish;
+import com.ericpol.hotmeals.model.Receipt;
 import com.ericpol.hotmeals.model.Supplier;
 import com.ericpol.hotmeals.model.User;
 import com.ericpol.hotmeals.client.HotmealsApi;
@@ -61,7 +67,7 @@ public class HotMealsClientApiTest {
 			.create(HotmealsApi.class);
 
 	/**
-	 * This test ...
+	 * This test ensures that new suppliers can be added to service's database.
 	 * 
 	 * @throws Exception
 	 */
@@ -85,7 +91,7 @@ public class HotMealsClientApiTest {
 	}
 	
 	/**
-	 * This test ...
+	 * This test ensures that new categories can be added to service's database.
 	 * 
 	 * @throws Exception
 	 */
@@ -97,7 +103,36 @@ public class HotMealsClientApiTest {
 	}
 
 	/**
-	 * This test ...
+	 * This test ensures that categories will distinct by name in the service's database.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testModifyCategory() throws Exception {
+
+		Supplier s = hotmealsClient.getSupplier("Кафе \"Умида\"");
+		Category oldCat = hotmealsClient.getCategory(s.getId(), "Супы");
+		Category newCat = new Category(s.getId(), "Первые блюда");
+		newCat.setId(oldCat.getId());
+		hotmealsClient.addCategory(newCat);
+		assert(oldCat.getId() == newCat.getId());
+	}
+	/**
+	 * This test ensures that categories will distinct by name in the service's database.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testDuplicateCategory() throws Exception {
+
+		Supplier s = hotmealsClient.getSupplier("Кафе \"Умида\"");
+		Category oldCat = hotmealsClient.getCategory(s.getId(), "Первые блюда");
+		Category newCat = hotmealsClient.addCategory(new Category(s.getId(), "Первые блюда"));
+		assert(oldCat.getId() == newCat.getId());
+	}
+
+	/**
+	 * This test ensures that new dishes can be added to service's database.
 	 * 
 	 * @throws Exception
 	 */
@@ -109,7 +144,44 @@ public class HotMealsClientApiTest {
 	}
 
 	/**
-	 * This test ...
+	 * This test ensures that the dishes can be modified in the service's database
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testModifyDish() throws Exception {
+
+		Supplier s = hotmealsClient.getSupplier("Кафе \"Умида\"");
+		Category c = hotmealsClient.getCategory(s.getId(), "Первые блюда");
+		Dish oldDish = hotmealsClient.getDish(s.getId(), c.getId(), "Рассольник ленинградский с курицей");
+
+		oldDish.setPrice(9700.0);
+		Dish newDish = hotmealsClient.addDish(oldDish);
+
+		assertTrue(oldDish.getId() == newDish.getId());
+	}
+	
+	/**
+	 * This test ensures that there could be multiple dishes in the service's database
+	 * with the same supplierId, categoryId and name.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testDuplicateDish() throws Exception {
+
+		Supplier s = hotmealsClient.getSupplier("Кафе \"Умида\"");
+		Category c = hotmealsClient.getCategory(s.getId(), "Первые блюда");
+		Dish oldDish = hotmealsClient.getDish(s.getId(), c.getId(), "Рассольник ленинградский с курицей");
+
+		Dish newDish = new Dish(s.getId(), c.getId(), "Рассольник ленинградский с курицей", 10000.0);
+		newDish = hotmealsClient.addDish(newDish);
+
+		assertTrue(oldDish.getId() != newDish.getId());
+	}
+	
+	/**
+	 * This test ensures that new users can be added to service's database.
 	 * 
 	 * @throws Exception
 	 */
@@ -120,6 +192,36 @@ public class HotMealsClientApiTest {
 		assertTrue(u.getId() > 0);
 	}
 
+	/**
+	 * This test ensures that users can be modified in the service's database.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testModifyUser() throws Exception {
+
+		User oldUser = hotmealsClient.getUser("user0");
+		oldUser.setFirstName("Александр");
+		oldUser.setLastName("Пушкин");
+		oldUser.setLogin("alpushkin");
+		oldUser.setPassword("123456");
+		oldUser.setEmail("alpushkin@yandex.ru");
+		User newUser = hotmealsClient.addUser(oldUser);
+		assertTrue(newUser.getId() == oldUser.getId());
+	}
+
+	/**
+	 * This test ...
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testFetchUsers() throws Exception {
+
+		Collection<User> users = hotmealsClient.fetchUsers();
+		assertTrue(users != null);
+	}
+	
 	/**
 	 * This test ensures that clients with invalid credentials cannot get
 	 * access to the service.
@@ -137,6 +239,54 @@ public class HotMealsClientApiTest {
 			assert (e.getCause() instanceof SecuredRestException);
 		}
 	}
+	
+	
+	/**
+	 * This test ensures that clients can store their orders with the help of the service.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testAddOrder() throws Exception {
+
+		User u = hotmealsClient.getUser("alpushkin");
+		Supplier s = hotmealsClient.getSupplier("Кафе \"Умида\"");
+		
+		Date dt = new Date();
+		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+
+		double total = 0.0;
+		List<Dish> dishes = new ArrayList<Dish>();
+
+		Category c = hotmealsClient.getCategory(s.getId(), "Первые блюда");
+		Dish d = hotmealsClient.getDish(s.getId(), c.getId(), "Суп из овощей с курицей");
+		dishes.add(d);
+		total += d.getPrice();
+
+		c = hotmealsClient.getCategory(s.getId(), "Вторые блюда");
+		d = hotmealsClient.getDish(s.getId(), c.getId(), "Плов по-узбекски");
+		dishes.add(d);
+		total += d.getPrice();
+
+		c = hotmealsClient.getCategory(s.getId(), "Напитки");
+		d = hotmealsClient.getDish(s.getId(), c.getId(), "Сок \"Настоящий\"");
+		dishes.add(d);
+		total += d.getPrice();
+
+		c = hotmealsClient.getCategory(s.getId(), "Десерты");
+		d = hotmealsClient.getDish(s.getId(), c.getId(), "Хлеб чёрный");
+		dishes.add(d);
+		total += d.getPrice();
+
+		Receipt r = new Receipt(u.getId(), s.getId(), df.format(dt), "Дзержинского, 52-6/510", "Позвонить на рецепцию", total);
+		Dish[] ds = new Dish[dishes.size()];
+		ds = dishes.toArray(ds);
+		r.setDishes(ds);
+
+		r = hotmealsClient.addOrder(r);
+		assertTrue(r.getId() > 0);
+	}
+	
 
 	/**
 	 * This test ...

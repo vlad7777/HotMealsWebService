@@ -14,19 +14,19 @@ import com.ericpol.hotmeals.model.Receipt;
 import com.ericpol.hotmeals.model.ReceiptsRepository;
 
 @RestController
-@RequestMapping("/hotmeals")
 public class ReceiptsController {
 
 	@Autowired
 	private ReceiptsRepository or;
 	
-	@RequestMapping(value = "/users/{userId}/orders", method = RequestMethod.GET)
-	List<Receipt> fetchUserReceipts(@PathVariable Long userId) {
+	@RequestMapping(value = "/hotmeals/users/{userId}/orders", method = RequestMethod.GET)
+	List<Receipt> fetchUserOrders(@PathVariable Long userId) {
 		return or.findByUserId(userId);
 	}
 	
-	@RequestMapping(value = "/orders", method = RequestMethod.POST)
-	@ResponseBody Receipt addReceipt(@RequestBody Receipt r) {
+	@RequestMapping(value = "/hotmeals/orders", method = RequestMethod.POST)
+	@ResponseBody Receipt addOrder(@RequestBody Receipt r) {
+		
 		return or.save(r);
 	}
 }
