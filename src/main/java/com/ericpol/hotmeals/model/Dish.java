@@ -25,10 +25,6 @@ public class Dish implements Comparable<Dish> {
 
     private long categoryId;
 
-    @JsonIgnore
-    @Transient
-    private String categoryName;
-
     private long supplierId;
 
     private String name;
@@ -41,38 +37,20 @@ public class Dish implements Comparable<Dish> {
     
     protected Dish() {/* for JPA only */}
 
-    public Dish(String categoryName, String name, int price, String dateBegin, String dateEnd)
-    {
-        this.categoryName = categoryName;
+    public Dish(long supplierId, long categoryId , String name, double price, String dateBegin, String dateEnd)
+    { 
+    	this.supplierId = supplierId;
+    	this.categoryId = categoryId;
         this.name = name;
         this.price = price;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
     
-    public Dish(long supplierId, long categoryId , String name, double price)
-    {
-    	this.supplierId = supplierId;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.price = price;
-        
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
-
-        // Today
-        Date dt = new Date();
-        this.dateBegin = df.format(dt);
-
-        // After tomorrow
-        dt = new Date(dt.getTime() + (1000 * 60 * 60 * 24 * 2));
-        this.dateEnd = df.format(dt);
-    }
-
     @Override
     public int compareTo(Dish dish)
     {
-        int c1 = this.categoryName.compareTo(dish.getCategoryName());
-        return c1 == 0 ? this.name.compareTo(dish.getName()) : c1;
+        return Long.compare(id, dish.getId());
     }
 
     public long getId() {
@@ -113,14 +91,6 @@ public class Dish implements Comparable<Dish> {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
     }
 
     public String getDateBegin() {

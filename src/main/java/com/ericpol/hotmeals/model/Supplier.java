@@ -62,13 +62,11 @@ public class Supplier{
     public List<Dish> selectDishes(String date) {
         List<Dish> result = new ArrayList<Dish>();
 
-        if (dishes == null)
-            syncWithDatabase();
-
-        for (Dish dish : dishes) {
-            if (compareStringDates(date, dish.getDateBegin()) >= 0 && compareStringDates(date, dish.getDateEnd()) <= 0)
-                result.add(dish);
-        }
+        if (dishes != null)
+            for (Dish dish : dishes) {
+                if (compareStringDates(date, dish.getDateBegin()) >= 0 && compareStringDates(date, dish.getDateEnd()) <= 0)
+                    result.add(dish);
+            }
 
         return result;
     }
@@ -82,35 +80,6 @@ public class Supplier{
         } catch (ParseException e) {
             return 0;
         }
-    }
-
-    private void syncWithDatabase() {
-        // TODO: 19.8.15 add some actual request to a database
-        Date today = new Date();
-        Date tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
-        Date yesterday = new Date(today.getTime() - (1000 * 60 * 60 * 24));
-
-        DateFormat df = new SimpleDateFormat("ddMMyyyy");
-
-        String sToday = df.format(today);
-        String sTomorrow = df.format(tomorrow);
-        String sYesterday = df.format(yesterday);
-
-        dishes = new ArrayList<Dish>();
-        dishes.add(new Dish("Soup", "Motherboard compound", 12000, sToday, sTomorrow));
-        dishes.add(new Dish("Soup", "Black hole blackness", 14300, sToday, sTomorrow));
-        dishes.add(new Dish("Soup", "Adam's Adam's apple", 23999, sToday, sToday));
-        dishes.add(new Dish("Dessert", "Virgin's tears syrup", 230500, sYesterday, sYesterday));
-        dishes.add(new Dish("Supplier ID", Long.toString(id), 23000, sToday, sToday));
-        dishes.add(new Dish("Main Dish", "chicken fillet seasoned with garlic", 40000, sToday, sTomorrow));
-        dishes.add(new Dish("Main Dish", "french fries", 23000, sTomorrow, sTomorrow));
-        dishes.add(new Dish("Main Dish", "not so french fries", 43000, sToday, sToday));
-        dishes.add(new Dish("Dessert", "Sweet Cherry Pie", 34000, sTomorrow, sTomorrow));
-        dishes.add(new Dish("Dessert", "Ice Cream Sandwitch", 23000, sToday, sToday));
-        dishes.add(new Dish("Exclusive", "Yesterday Exclusive", 23000, sYesterday, sYesterday));
-        dishes.add(new Dish("Exclusive", "Today Exclusive", 23000, sToday, sToday));
-        dishes.add(new Dish("Exclusive", "Tomorrow Exclusive", 23000, sTomorrow, sTomorrow));
-
     }
 
     //For JSON
